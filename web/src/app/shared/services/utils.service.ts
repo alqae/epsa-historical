@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
 import { throwError } from 'rxjs';
 
 import { DialogComponent } from '../components/dialog/dialog.component';
@@ -47,38 +46,7 @@ export class UtilsService {
     });
   }
 
-  getItemLocalStorage(key: string) {
-    const storageVal: any = localStorage.getItem(key);
-    try {
-      return JSON.parse(storageVal);
-    } catch (error) {
-      return storageVal;
-    }
-  }
-
-  renderErrors(errors: any) {
-    let template = `<p class="mt-10"><strong>Errores:</strong>`;
-    template += `<ul class="mt-10">`;
-    errors.forEach((error: any) => {
-      template += `<li><p>${error[0]}</p></li>`;
-    });
-    template += `</ul>`;
-    return template;
-  }
-
-  getFormValidationErrors(form: FormGroup) {
-    Object.keys(form.controls).forEach(key => {
-      const controlErrors: any = form.get(key)?.errors;
-      console.log(key);
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    });
-  }
-
   formatDate(value: Date): string {
-    return `${value.getFullYear()}-${value.getMonth()}-${value.getDay()}`;
+    return `${value.getFullYear()}-${value.getMonth() + 1}-${value.getDate()}`;
   }
 }

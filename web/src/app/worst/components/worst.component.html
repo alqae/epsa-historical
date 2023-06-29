@@ -1,6 +1,6 @@
-<h1 class="mb-3">Historical Consumption by Lines</h1>
+<h1 class="mb-3">Worst Legs/Customer</h1>
 <mat-grid-list gutterSize="24" cols="12" class="filters" [formGroup]="filtersForm">
-  <mat-grid-tile colspan="4">
+  <mat-grid-tile colspan="3">
     <mat-form-field appearance="outline">
       <mat-label>Start Date</mat-label>
       <input formControlName="startDate" matInput [matDatepicker]="startDatePicker">
@@ -9,7 +9,7 @@
     </mat-form-field>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="4">
+  <mat-grid-tile colspan="3">
     <mat-form-field appearance="outline">
       <mat-label>End Date</mat-label>
       <input formControlName="endDate" matInput [matDatepicker]="endDatePicker">
@@ -18,13 +18,25 @@
     </mat-form-field>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="4">
+  <mat-grid-tile colspan="3">
     <mat-form-field appearance="outline">
       <mat-label>Line</mat-label>
       <mat-select formControlName="line">
         <mat-option>All</mat-option>
         <mat-option *ngFor="let line of lines" [value]="line.id">
           {{line.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="3">
+    <mat-form-field appearance="outline">
+      <mat-label>Client Type</mat-label>
+      <mat-select formControlName="clientType">
+        <mat-option>All</mat-option>
+        <mat-option *ngFor="let clientType of clientTypes" [value]="clientType.id">
+          {{clientType.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -51,11 +63,6 @@
   <ng-container matColumnDef="loss">
     <th mat-header-cell *matHeaderCellDef> Loss </th>
     <td mat-cell *matCellDef="let element"> {{element.loss}} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="cost">
-    <th mat-header-cell *matHeaderCellDef> Cost </th>
-    <td mat-cell *matCellDef="let element"> {{element.cost}} </td>
   </ng-container>
 
   <ng-container matColumnDef="date">

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { AppDataSource } from "../data-source"
-import { Between, FindOptionsWhere, LessThan, MoreThan } from "typeorm"
+import { Between, FindOneOptions, FindOptionsWhere, LessThan, MoreThan } from "typeorm"
 
 import { ConsumptionHistory } from "../entity/ConsumptionHistory"
 
@@ -15,6 +15,9 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
   const endDate = req.query.endDate
   const lineId = req.query.lineId
   const clientTypeId = req.query.clientTypeId
+  const order: FindOneOptions<ConsumptionHistory>['order'] = {}
+  const orderBy = req.query.orderBy
+  const orderDirection = req.query.orderDirection
 
   if (startDate && !endDate) {
     criteria.date = MoreThan(startDate.toString())
@@ -32,14 +35,18 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
     criteria.clientTypeId = parseInt(clientTypeId.toString());
   }
 
+  if (orderBy && orderDirection) {
+    order[orderBy.toString()] = orderDirection.toString().toUpperCase()
+  } else {
+    order.date = 'DESC'
+  }
+
   const consumptionHistoryRepository = AppDataSource.getRepository(ConsumptionHistory)
   const consumptionHistory = await consumptionHistoryRepository.findAndCount({
     take,
     skip,
     where: criteria,
-    order: {
-      lineId: "ASC",
-    }
+    order,
   })
 
   res.json(consumptionHistory)

@@ -13,4 +13,6 @@ export interface ConsumptionHistoryFilters {
   endDate?: string,
   clientTypeId?: number,
   lineId?: number,
+  orderBy?: string,
+  orderDirection?: 'ASC' | 'DESC',
 }

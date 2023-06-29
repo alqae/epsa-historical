@@ -27,8 +27,6 @@ export class ClientsComponent {
     clientType: new FormControl<number>(NaN, []),
     startDate: new FormControl<Date | null>(null, []),
     endDate: new FormControl<Date | null>(null, []),
-    // groupByLine: new FormControl(false, []),
-    // stadistics: new FormControl(false, []),
   });
 
   constructor(

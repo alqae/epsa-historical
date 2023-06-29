@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 
 import { ConsumptionHistoryFilters, ConsumptionHistory } from '@app/models/ConsumptionHistory';
 import { environment } from '@environments/environment';
 import { ClientType } from '@app/models/ClientType';
+import { UtilsService } from './utils.service';
 import { Line } from '@app/models/Line';
 
 @Injectable({
@@ -16,7 +17,10 @@ export class ApiService {
   private lines: Line[] = [];
   private clientTypes: ClientType[] = [];
 
-  constructor(private _http: HttpClient) {
+  constructor(
+    private _http: HttpClient,
+    private _utilsService: UtilsService,
+  ) {
     this._url = environment.apiUrl;
     this.getLines().subscribe((lines) => this.lines = lines);
     this.getClientTypes().subscribe((clientTypes) => this.clientTypes = clientTypes);
@@ -30,6 +34,8 @@ export class ApiService {
       endDate,
       lineId,
       clientTypeId,
+      orderBy,
+      orderDirection,
     }: ConsumptionHistoryFilters
   ): Observable<[ConsumptionHistory[], number]> {
     const params: { [param: string]: string | number } = { take, page };
@@ -50,15 +56,23 @@ export class ApiService {
       params['clientTypeId'] = clientTypeId;
     }
 
-    return this._http.get<[ConsumptionHistory[], number]>(`${this._url}consumption-history`, { params });
+    if (orderBy && orderDirection) {
+      params['orderBy'] = orderBy;
+      params['orderDirection'] = orderDirection;
+    }
+
+    return this._http.get<[ConsumptionHistory[], number]>(`${this._url}consumption-history`, { params })
+      .pipe(catchError(this._utilsService.handleErrorHttp));
   }
 
   getLines(): Observable<Line[]> {
-    return this._http.get<Line[]>(`${this._url}lines`);
+    return this._http.get<Line[]>(`${this._url}lines`)
+      .pipe(catchError(this._utilsService.handleErrorHttp));
   }
 
   getClientTypes(): Observable<ClientType[]> {
-    return this._http.get<ClientType[]>(`${this._url}client-types`);
+    return this._http.get<ClientType[]>(`${this._url}client-types`)
+      .pipe(catchError(this._utilsService.handleErrorHttp));
   }
 
   getLineById(id: number): string {
