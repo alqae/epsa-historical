@@ -1,6 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { User } from "./entity/User"
+import { ConsumptionHistory } from "./entity/ConsumptionHistory"
+import { Line } from "./entity/Line"
 
 export const AppDataSource = new DataSource({
   type: "mssql",
@@ -9,8 +10,8 @@ export const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   synchronize: true,
-  logging: false,
-  entities: [User],
+  logging: true,
+  entities: [ConsumptionHistory, Line],
   migrations: [],
   subscribers: [],
   options: {
