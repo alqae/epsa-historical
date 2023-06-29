@@ -8,10 +8,14 @@ import { MaterialModule } from './material/material.module';
 
 import * as fromComponents from './components';
 import * as fromServices from './services';
+import * as fromPipes from './pipes';
+import { LinePipe } from './pipes/line.pipe';
 
 @NgModule({
   declarations: [
     ...fromComponents.components,
+    ...fromPipes.pipes,
+    LinePipe,
   ],
   imports: [
     CommonModule,
@@ -27,6 +31,7 @@ import * as fromServices from './services';
     FormsModule,
     HttpClientModule,
     ...fromComponents.components,
+    ...fromPipes.pipes,
   ],
   providers: [
     ...fromServices.services,

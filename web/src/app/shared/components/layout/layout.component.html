@@ -10,9 +10,9 @@
 <mat-drawer-container autosize>
   <mat-drawer #drawer mode="side">
     <mat-nav-list class="links">
-      <a mat-list-item routerLink="/lines">Lines</a>
-      <a mat-list-item routerLink="/clients">Clients</a>
-      <a mat-list-item routerLink="/worst">Worst</a>
+      <a (click)="drawer.toggle()" mat-list-item routerLink="/lines">Lines</a>
+      <a (click)="drawer.toggle()" mat-list-item routerLink="/clients">Clients</a>
+      <a (click)="drawer.toggle()" mat-list-item routerLink="/worst">Worst</a>
     </mat-nav-list>
   </mat-drawer>
 

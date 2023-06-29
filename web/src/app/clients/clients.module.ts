@@ -2,21 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LinesRoutingModule } from './lines-routing.module';
-import { LinesComponent } from './components/lines.component';
+import { ClientsRoutingModule } from './clients-routing.module';
+import { ClientsComponent } from './components/clients.component';
 import { SharedModule } from '@app/shared';
 
 
 @NgModule({
   declarations: [
-    LinesComponent
+    ClientsComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    LinesRoutingModule
-  ],
+    ClientsRoutingModule
+  ]
 })
-export class LinesModule { }
+export class ClientsModule { }

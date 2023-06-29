@@ -1,6 +1,6 @@
 export interface ConsumptionHistory {
   id: number;
-  clientId: number;
+  clientTypeId: number;
   lineId: number;
   consumption: number;
   loss: number;
@@ -11,5 +11,6 @@ export interface ConsumptionHistory {
 export interface ConsumptionHistoryFilters {
   startDate?: string,
   endDate?: string,
+  clientTypeId?: number,
   lineId?: number,
 }

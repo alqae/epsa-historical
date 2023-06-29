@@ -14,6 +14,7 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
   const startDate = req.query.startDate
   const endDate = req.query.endDate
   const lineId = req.query.lineId
+  const clientTypeId = req.query.clientTypeId
 
   if (startDate && !endDate) {
     criteria.date = MoreThan(startDate.toString())
@@ -25,6 +26,10 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
 
   if (lineId) {
     criteria.lineId = parseInt(lineId.toString());
+  }
+
+  if (clientTypeId) {
+    criteria.clientTypeId = parseInt(clientTypeId.toString());
   }
 
   const consumptionHistoryRepository = AppDataSource.getRepository(ConsumptionHistory)

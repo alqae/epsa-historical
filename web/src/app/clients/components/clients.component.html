@@ -1,4 +1,4 @@
-<h1 class="mb-3">Historical Consumption by Lines</h1>
+<h1 class="mb-3">Historical Consumption by Client</h1>
 <mat-grid-list gutterSize="24" cols="12" class="filters" [formGroup]="filtersForm">
   <mat-grid-tile colspan="4">
     <mat-form-field appearance="outline">
@@ -20,11 +20,11 @@
 
   <mat-grid-tile colspan="4">
     <mat-form-field appearance="outline">
-      <mat-label>Line</mat-label>
-      <mat-select formControlName="line">
+      <mat-label>Client Type</mat-label>
+      <mat-select formControlName="clientType">
         <mat-option>All</mat-option>
-        <mat-option *ngFor="let line of lines" [value]="line.id">
-          {{line.name}}
+        <mat-option *ngFor="let clientType of clientTypes" [value]="clientType.id">
+          {{clientType.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>

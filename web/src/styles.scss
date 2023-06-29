@@ -5,3 +5,17 @@
 @import 'styles/base/typographics';
 @import 'styles/base/utils';
 @import 'styles/base/rewrites';
+
+html, body {
+  height: 100%;
+}
+
+.filters {
+  margin-bottom: 24px;
+  padding-top: 24px;
+  
+  .mat-mdc-form-field {
+    margin-top: 12px;
+    width: 100%;
+  }
+}

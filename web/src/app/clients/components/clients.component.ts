@@ -1,26 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { ConsumptionHistory, ConsumptionHistoryFilters } from '@app/models/ConsumptionHistory';
 import { ApiService, UtilsService } from '@app/shared/services';
-import { Line } from '@app/models/Line';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import { ClientType } from '@app/models/ClientType';
 
 @Component({
-  templateUrl: './lines.component.html',
+  selector: 'app-clients',
+  templateUrl: './clients.component.html',
 })
-export class LinesComponent implements OnInit {
+export class ClientsComponent {
   public displayedColumns: string[] = ['id', 'clientTypeId', 'lineId', 'loss', 'cost', 'date'];
   public dataSource = new MatTableDataSource<ConsumptionHistory>([]);
-  public lines: Line[] = [];
+  public clientTypes: ClientType[] = [];
 
   public pageSize = 10;
   public pageSizeOptions = [5, 10, 25, 100];
@@ -30,7 +24,7 @@ export class LinesComponent implements OnInit {
   public isLoading = false;
 
   filtersForm = new FormGroup({
-    line: new FormControl<number>(NaN, []),
+    clientType: new FormControl<number>(NaN, []),
     startDate: new FormControl<Date | null>(null, []),
     endDate: new FormControl<Date | null>(null, []),
     // groupByLine: new FormControl(false, []),
@@ -44,18 +38,18 @@ export class LinesComponent implements OnInit {
     this.filtersForm.valueChanges.subscribe((value) => {
       let startDate;
       let endDate;
-      let lineId;
+      let clientTypeId;
 
       if (value.startDate) startDate = this.utilsService.formatDate(value.startDate);
       if (value.endDate) endDate = this.utilsService.formatDate(value.endDate);
-      if (value.line) lineId = value.line;
+      if (value.clientType) clientTypeId = value.clientType;
 
-      this.getHistory({ startDate, endDate, lineId })
+      this.getHistory({ startDate, endDate, clientTypeId })
     });
   }
 
   ngOnInit() {
-    this.apiService.getLines().subscribe((lines) => this.lines = lines);
+    this.apiService.getClientTypes().subscribe((clientTypes) => this.clientTypes = clientTypes);
     this.getHistory();
   }
 
@@ -74,6 +68,7 @@ export class LinesComponent implements OnInit {
         startDate: values?.startDate,
         endDate: values?.endDate,
         lineId: values?.lineId,
+        clientTypeId: values?.clientTypeId,
       }
     ).subscribe((data) => {
         this.dataSource.data = data[0];

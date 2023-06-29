@@ -77,4 +77,8 @@ export class UtilsService {
       }
     });
   }
+
+  formatDate(value: Date): string {
+    return `${value.getFullYear()}-${value.getMonth()}-${value.getDay()}`;
+  }
 }

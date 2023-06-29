@@ -5,7 +5,7 @@ export class ConsumptionHistory {
   @PrimaryGeneratedColumn()
   id: number;
   @Column("decimal", { name: "idTipCliente", nullable: false, default: 0 })
-  clientId: number;
+  clientTypeId: number;
   @Column("decimal", { name: "idLinea", nullable: false, default: 0 })
   lineId: number;
   @Column("decimal", { name: "Consumo", nullable: false, default: 0 })

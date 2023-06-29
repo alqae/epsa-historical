@@ -1,6 +1,8 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
+
 import { ConsumptionHistory } from "./entity/ConsumptionHistory"
+import { ClientType } from "./entity/ClientType"
 import { Line } from "./entity/Line"
 
 export const AppDataSource = new DataSource({
@@ -11,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   synchronize: true,
   logging: true,
-  entities: [ConsumptionHistory, Line],
+  entities: [ConsumptionHistory, Line, ClientType],
   migrations: [],
   subscribers: [],
   options: {

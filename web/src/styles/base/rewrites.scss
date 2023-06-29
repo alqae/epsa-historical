@@ -1,8 +1,13 @@
 .mat-mdc-table {
   background: transparent;
   box-shadow: none;
+
+  .mat-mdc-cell,
+  .mat-mdc-header-cell {
+    vertical-align: middle;
+  }
 }
 
 .mat-mdc-paginator {
-  background: transparent;
+  background: transparent !important;
 }

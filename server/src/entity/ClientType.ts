@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
-@Entity("Lineas")
-export class Line {
+@Entity("Tipo_clientes")
+export class ClientType {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column("varchar", { name: "nombre", length: 50, nullable: false, default: "" })
+  @Column("varchar", { length: 50, name: "nombre", nullable: true, default: "" })
   name: string
 
   @Column("text", { name: "descripcion", nullable: false, default: "" })
