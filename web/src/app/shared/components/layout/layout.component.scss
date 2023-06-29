@@ -1,0 +1,18 @@
+@import '@angular/material/theming';
+
+.mat-drawer-container{
+  height: calc(100% - 64px);
+  background-color: map-get(mat-palette($mat-gray), 900);
+}
+
+.links {
+  a {
+    min-width: 200px;
+  }
+}
+
+.main-layout {
+  margin-top: 24px;
+  margin-bottom: 50px;
+  padding: 24px;
+}

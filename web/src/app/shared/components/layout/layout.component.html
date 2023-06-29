@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" class="mat-elevation-z8">
+  <header>
+    <button mat-icon-button color="accent" aria-label="Example icon button with a menu icon" (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <label clickable routerLink="/">My Application</label>
+  </header>
+</mat-toolbar>
+
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side">
+    <mat-nav-list class="links">
+      <a mat-list-item routerLink="/lines">Lines</a>
+      <a mat-list-item routerLink="/clients">Clients</a>
+      <a mat-list-item routerLink="/worst">Worst</a>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <div class="main-layout container mat-elevation-z8">
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>
