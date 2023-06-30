@@ -11,10 +11,11 @@ services:
     volumes:
       - ./db-data:/var/opt/mssql
       - ./scripts:/scripts
+    # After run seed script, the container will be stopped and the database will be ready to use.
+    # To run the container in background, remove the command section and add the following line:
     command:
       - /bin/bash
       - -c
       - |
         /opt/mssql/bin/sqlservr & sleep 30s
         /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${DATABASE_PASSWORD} -i /scripts/initial-script.sql
-        
