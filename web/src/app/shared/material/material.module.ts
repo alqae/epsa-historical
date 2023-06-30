@@ -23,6 +23,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const modules = [
   MatToolbarModule,
@@ -34,6 +35,7 @@ const modules = [
   MatCardModule,
   MatDialogModule,
   MatTableModule,
+  MatTabsModule,
   MatMenuModule,
   MatPaginatorModule,
   MatProgressBarModule,

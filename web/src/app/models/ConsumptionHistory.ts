@@ -9,6 +9,8 @@ export interface ConsumptionHistory {
 }
 
 export interface ConsumptionHistoryFilters {
+  take?: number,
+  page?: number,
   startDate?: string,
   endDate?: string,
   clientTypeId?: number,

@@ -26,39 +26,16 @@ export class ApiService {
     this.getClientTypes().subscribe((clientTypes) => this.clientTypes = clientTypes);
   }
 
-  getCosumptionHistory(
-    take = 10,
-    page = 1,
-    {
-      startDate,
-      endDate,
-      lineId,
-      clientTypeId,
-      orderBy,
-      orderDirection,
-    }: ConsumptionHistoryFilters
-  ): Observable<[ConsumptionHistory[], number]> {
-    const params: { [param: string]: string | number } = { take, page };
+  getCosumptionHistory(filters: ConsumptionHistoryFilters): Observable<[ConsumptionHistory[], number]> {
+    const params: { [x: string]: string | number } = {};
 
-    if (startDate) {
-      params['startDate'] = startDate;
-    }
-
-    if (endDate) {
-      params['endDate'] = endDate;
-    }
-
-    if (lineId) {
-      params['lineId'] = lineId;
-    }
-
-    if (clientTypeId) {
-      params['clientTypeId'] = clientTypeId;
-    }
-
-    if (orderBy && orderDirection) {
-      params['orderBy'] = orderBy;
-      params['orderDirection'] = orderDirection;
+    const keys = Object.keys(filters);
+    if (keys.length) {
+      keys.map((key) => {
+        if (filters[key as keyof ConsumptionHistoryFilters]) {
+          params[key] = filters[key as keyof ConsumptionHistoryFilters]?.toString() || "";
+        }
+      });
     }
 
     return this._http.get<[ConsumptionHistory[], number]>(`${this._url}consumption-history`, { params })

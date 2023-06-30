@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 
 import { ConsumptionHistory, ConsumptionHistoryFilters } from '@app/models/ConsumptionHistory';
 import { ApiService, UtilsService } from '@app/shared/services';
@@ -18,13 +17,11 @@ export interface PeriodicElement {
   templateUrl: './lines.component.html',
 })
 export class LinesComponent implements OnInit {
-  public displayedColumns: string[] = ['id', 'clientTypeId', 'lineId', 'loss', 'cost', 'date'];
-  public dataSource = new MatTableDataSource<ConsumptionHistory>([]);
   public lines: Line[] = [];
 
   public pageSize = 10;
-  public pageSizeOptions = [5, 10, 25, 100];
   public pageIndex = 0;
+  public history: ConsumptionHistory[] = [];
   public length = 0;
 
   public isLoading = false;
@@ -66,17 +63,23 @@ export class LinesComponent implements OnInit {
   getHistory(values?: ConsumptionHistoryFilters) {
     this.isLoading = true;
     this.apiService.getCosumptionHistory(
-      this.pageSize,
-      this.pageIndex + 1,
       {
+        take: this.pageSize,
+        page: this.pageIndex + 1,
         startDate: values?.startDate,
         endDate: values?.endDate,
         lineId: values?.lineId,
+        orderBy: 'date',
+        orderDirection: values?.startDate ? 'ASC' : 'DESC',
       }
     ).subscribe((data) => {
-        this.dataSource.data = data[0];
-        this.length = data[1];
-        this.isLoading = false;
-      })
+      this.history = data[0];
+      this.length = data[1];
+      this.isLoading = false;
+    });
+  }
+
+  clearFilters() {
+    this.filtersForm.reset();
   }
 }

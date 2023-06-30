@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 
 import { ConsumptionHistory, ConsumptionHistoryFilters } from '@app/models/ConsumptionHistory';
 import { ApiService, UtilsService } from '@app/shared/services';
@@ -12,12 +11,10 @@ import { ClientType } from '@app/models/ClientType';
   templateUrl: './clients.component.html',
 })
 export class ClientsComponent {
-  public displayedColumns: string[] = ['id', 'clientTypeId', 'lineId', 'loss', 'cost', 'date'];
-  public dataSource = new MatTableDataSource<ConsumptionHistory>([]);
   public clientTypes: ClientType[] = [];
 
+  public history: ConsumptionHistory[] = [];
   public pageSize = 10;
-  public pageSizeOptions = [5, 10, 25, 100];
   public pageIndex = 0;
   public length = 0;
 
@@ -59,19 +56,21 @@ export class ClientsComponent {
 
   getHistory(values?: ConsumptionHistoryFilters) {
     this.isLoading = true;
-    this.apiService.getCosumptionHistory(
-      this.pageSize,
-      this.pageIndex + 1,
-      {
+    this.apiService.getCosumptionHistory({
+        take: this.pageSize,
+        page: this.pageIndex + 1,
         startDate: values?.startDate,
         endDate: values?.endDate,
         lineId: values?.lineId,
         clientTypeId: values?.clientTypeId,
-      }
-    ).subscribe((data) => {
-        this.dataSource.data = data[0];
-        this.length = data[1];
-        this.isLoading = false;
-      })
+    }).subscribe((data) => {
+      this.history = data[0];
+      this.length = data[1];
+      this.isLoading = false;
+    });
+  }
+
+  clearFilters() {
+    this.filtersForm.reset();
   }
 }

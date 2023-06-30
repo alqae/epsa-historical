@@ -6,9 +6,9 @@ import { ConsumptionHistory } from "../entity/ConsumptionHistory"
 
 export const getConsumptionHistory = async (req: Request, res: Response) => {
   // Pagination
-  const take = parseInt(req.query.take.toString()) || 10
-  const page = parseInt(req.query.page.toString()) || 0
-  const skip= (page-1) * take 
+  const take = req.query.take ? parseInt(req.query.take.toString()) : null;
+  const page = req.query.page ? parseInt(req.query.page.toString()) : null;
+  const skip= page && take ? (page-1) * take : null;
   // Filters
   const criteria: FindOptionsWhere<ConsumptionHistory> = {}
   const startDate = req.query.startDate
@@ -49,5 +49,13 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
     order,
   })
 
-  res.json(consumptionHistory)
+  if (take && !page) {
+    // Minimize the amount of data sent to the client for graphing
+    res.json([
+      consumptionHistory[0].sort(() => 0.5 - Math.random()).slice(0, take),
+      take,
+    ])
+  } else {
+    res.json(consumptionHistory)
+  }
 }
