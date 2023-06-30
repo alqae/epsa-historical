@@ -9,7 +9,7 @@ import { AppDataSource } from "./data-source"
 
 (async () => {
   const PORT = process.env.PORT || 4000
-  await AppDataSource.initialize();
+  await AppDataSource.initialize()
   const app = express()
   app.use(
     cors({
@@ -17,9 +17,9 @@ import { AppDataSource } from "./data-source"
       credentials: true
     })
   )
-  app.use("/consumption-history", ConsumptionHistoryRoutes);
-  app.use("/lines", LinesRoutes);
-  app.use("/client-types", ClientTypeRoutes);
+  app.use("/consumption-history", ConsumptionHistoryRoutes)
+  app.use("/lines", LinesRoutes)
+  app.use("/client-types", ClientTypeRoutes)
   app.get("/", (_req, res) => res.send("hello"))
   app.listen(PORT, () => console.log("Server running on port " + PORT + "! 🚀"))
 })()

@@ -1,14 +1,16 @@
 import { Request, Response } from "express"
-import { AppDataSource } from "../data-source"
 import { Between, FindOneOptions, FindOptionsWhere, LessThan, MoreThan } from "typeorm"
 
 import { ConsumptionHistory } from "../entity/ConsumptionHistory"
+import { chunkArray } from "../utils/chunkArray"
+import { AppDataSource } from "../data-source"
+
 
 export const getConsumptionHistory = async (req: Request, res: Response) => {
   // Pagination
-  const take = req.query.take ? parseInt(req.query.take.toString()) : null;
-  const page = req.query.page ? parseInt(req.query.page.toString()) : null;
-  const skip= page && take ? (page-1) * take : null;
+  const take = req.query.take &&  req.query.page ? parseInt(req.query.take.toString()) : null
+  const page = req.query.page ? parseInt(req.query.page.toString()) : null
+  const skip= page && take ? (page-1) * take : null
   // Filters
   const criteria: FindOptionsWhere<ConsumptionHistory> = {}
   const startDate = req.query.startDate
@@ -28,17 +30,17 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
   }
 
   if (lineId) {
-    criteria.lineId = parseInt(lineId.toString());
+    criteria.lineId = parseInt(lineId.toString())
   }
 
   if (clientTypeId) {
-    criteria.clientTypeId = parseInt(clientTypeId.toString());
+    criteria.clientTypeId = parseInt(clientTypeId.toString())
   }
 
   if (orderBy && orderDirection) {
     order[orderBy.toString()] = orderDirection.toString().toUpperCase()
   } else {
-    order.date = 'DESC'
+    order.date = "DESC"
   }
 
   const consumptionHistoryRepository = AppDataSource.getRepository(ConsumptionHistory)
@@ -49,11 +51,23 @@ export const getConsumptionHistory = async (req: Request, res: Response) => {
     order,
   })
 
-  if (take && !page) {
+  if (req.query.take && !page) {
     // Minimize the amount of data sent to the client for graphing
+
     res.json([
-      consumptionHistory[0].sort(() => 0.5 - Math.random()).slice(0, take),
-      take,
+      chunkArray<ConsumptionHistory>(
+        consumptionHistory[0],
+        (consumptionHistory[0].length / parseInt(req.query.take.toString()))
+      ).map((chunk) => ({
+          id: chunk[0].id,
+          date: chunk[0].date,
+          cost: chunk.reduce((acc, item) => acc + item.cost, 0),
+          loss: chunk.reduce((acc, item) => acc + item.loss, 0),
+          consumption: chunk.reduce((acc, item) => acc + item.consumption, 0),
+          lineId: chunk[0].lineId,
+          clientTypeId: chunk[0].clientTypeId,
+        })),
+      consumptionHistory[1],
     ])
   } else {
     res.json(consumptionHistory)

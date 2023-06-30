@@ -27,21 +27,20 @@ export class WorstGraphComponent implements AfterViewInit, OnChanges {
     private utilsService: UtilsService,
   ) {
     this.chartOptions = {
-      width: 800,
+      width: 900,
       height: 600,
-      theme: "dark2",
+      theme: 'dark2',
       animationEnabled: true,
       zoomEnabled: true,
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       axisY: {
         includeZero: true,
       },
       axisX: {
-        lineThickness: 0,
         intervalType: 'day',
         interval: 1,
-        labelFontSize: 10,
-        labelFormatter: () => ""
+        labelFontSize: 8,
+        labelAngle: -70,
       },
     };
   }
@@ -64,10 +63,12 @@ export class WorstGraphComponent implements AfterViewInit, OnChanges {
     }).subscribe((data) => {
       this.chartOptions.data = [
         {
-          type: 'stepLine',
+          type: 'area',
           showInLegend: true,
           name: 'Loss',
-          dataPoints: data[0].map((item) => ({
+          dataPoints: data[0]
+          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .map((item) => ({
             y: item.loss,
             label: this.utilsService.formatDate(new Date(item.date)),
           })),

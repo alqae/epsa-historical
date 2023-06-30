@@ -16,8 +16,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-// import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
-// import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -42,8 +40,6 @@ const modules = [
   MatSnackBarModule,
   MatListModule,
   MatSelectModule,
-  // MatSelectInfiniteScrollModule,
-  // NgxMatSelectSearchModule,
   MatSortModule,
   MatDatepickerModule,
   MatNativeDateModule,

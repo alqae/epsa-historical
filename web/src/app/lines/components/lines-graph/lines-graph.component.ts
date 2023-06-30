@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { CanvasJS, CanvasJSChart } from '@canvasjs/angular-charts';
 
 import { ApiService, UtilsService } from '@app/shared/services';
@@ -14,15 +14,13 @@ import { Line } from '@app/models/Line';
     ></div>
   `,
 })
-export class LinesGraphComponent implements AfterViewInit {
+export class LinesGraphComponent implements AfterViewInit, OnChanges {
   @ViewChild('chartContainer') chartContainer!: ElementRef;
   private chartOptions: CanvasJSChart['options'];
   private lines: Line[] = []
 
   @Input() startDate?: Date | null;
   @Input() endDate?: Date | null;
-  @Input() line?: number | null;
-  @Input() clientType?: number | null;
 
   constructor(
     private apiService: ApiService,
@@ -31,15 +29,14 @@ export class LinesGraphComponent implements AfterViewInit {
     this.chartOptions = {
       width: 800,
       height: 500,
-      theme: "dark2",
+      theme: 'dark2',
       animationEnabled: true,
       zoomEnabled:true,
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       axisY: {
         includeZero: true,
       },
       axisX: {
-        lineThickness: 0,
         intervalType: 'day',
         interval: 1,
         labelFontSize: 10,
@@ -49,12 +46,22 @@ export class LinesGraphComponent implements AfterViewInit {
     this.apiService.getLines().subscribe((lines) => this.lines = lines);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.setupChart();
+  }
+
   ngAfterViewInit() {
     this.setupChart();
   }
 
   setupChart() {
-    this.apiService.getCosumptionHistory({ take: 100 }).subscribe((data) => {
+    this.apiService.getCosumptionHistory({
+      take: 100,
+      startDate: this.startDate ? this.utilsService.formatDate(this.startDate) : undefined,
+      endDate: this.endDate ? this.utilsService.formatDate(this.endDate) : undefined,
+    }).subscribe((data) => {
+      const minCost = Math.min(...data[0].map((item) => item.cost));
+      this.chartOptions.axisY.minimum = minCost - (minCost * 0.05);
       this.chartOptions.data = this.lines.map((line) => ({
         type: 'line',
         showInLegend: true,

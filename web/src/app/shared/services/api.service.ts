@@ -33,7 +33,7 @@ export class ApiService {
     if (keys.length) {
       keys.map((key) => {
         if (filters[key as keyof ConsumptionHistoryFilters]) {
-          params[key] = filters[key as keyof ConsumptionHistoryFilters]?.toString() || "";
+          params[key] = filters[key as keyof ConsumptionHistoryFilters]?.toString() || '';
         }
       });
     }
@@ -53,10 +53,10 @@ export class ApiService {
   }
 
   getLineById(id: number): string {
-    return this.lines.find((line) => line.id === id)?.name || "unknown";
+    return this.lines.find((line) => line.id === id)?.name || 'unknown';
   }
 
   getClientTypeById(id: number): string {
-    return this.clientTypes.find((clientType) => clientType.id === id)?.name || "unknown";
+    return this.clientTypes.find((clientType) => clientType.id === id)?.name || 'unknown';
   }
 }

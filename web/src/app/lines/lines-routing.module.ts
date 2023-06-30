@@ -6,7 +6,7 @@ import { LinesComponent } from './components/lines.component';
 const routes: Routes = [
   {
     path: '',
-    component: LinesComponent, // <--- component declaration for LinesComponent
+    component: LinesComponent,
   }
 ];
 
